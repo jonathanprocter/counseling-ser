@@ -1,0 +1,20 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: counseling-ser-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: counseling_ser
+    ports:
+      - "3306:3306"
+    volumes:
+      - counseling_ser_mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-ppassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  counseling_ser_mysql:

@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: counseling-ser-ser
+    runtime: python
+    rootDir: ser_service
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn -w 2 -k gthread -b 0.0.0.0:${PORT:-5001} ser_service:app
+    autoDeploy: true
+    envVars:
+      - key: SER_PORT
+        value: 5001

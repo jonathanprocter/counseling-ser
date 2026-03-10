@@ -1,0 +1,10 @@
+Flask==3.0.3
+flask-cors==4.0.1
+gunicorn==22.0.0
+numpy==2.1.2
+scipy==1.14.1
+soundfile==0.12.1
+opensmile==2.5.0
+# audonnx is optional; if unavailable the service falls back to openSMILE
+# Keep it installed for environments where the model is present.
+audonnx==0.7.0

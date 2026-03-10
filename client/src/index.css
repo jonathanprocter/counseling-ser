@@ -1,0 +1,271 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  /* Clinical emotion colors */
+  --arousal: oklch(0.6 0.2 25);
+  --valence: oklch(0.5 0.18 145);
+  --dominance: oklch(0.5 0.18 270);
+  --alert-critical: oklch(0.5 0.22 25);
+  --alert-high: oklch(0.6 0.2 45);
+  --alert-medium: oklch(0.65 0.18 75);
+  --alert-low: oklch(0.6 0.1 200);
+  --primary: var(--color-blue-700);
+  --primary-foreground: var(--color-blue-50);
+  --sidebar-primary: var(--color-blue-600);
+  --sidebar-primary-foreground: var(--color-blue-50);
+  --chart-1: var(--color-blue-300);
+  --chart-2: var(--color-blue-500);
+  --chart-3: var(--color-blue-600);
+  --chart-4: var(--color-blue-700);
+  --chart-5: var(--color-blue-800);
+  --radius: 0.65rem;
+  --background: oklch(0.975 0.004 240);
+  --foreground: oklch(0.235 0.015 65);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.235 0.015 65);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.235 0.015 65);
+  --secondary: oklch(0.98 0.001 286.375);
+  --secondary-foreground: oklch(0.4 0.015 65);
+  --muted: oklch(0.967 0.001 286.375);
+  --muted-foreground: oklch(0.552 0.016 285.938);
+  --accent: oklch(0.967 0.001 286.375);
+  --accent-foreground: oklch(0.141 0.005 285.823);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.92 0.004 286.32);
+  --input: oklch(0.92 0.004 286.32);
+  --ring: oklch(0.623 0.214 259.815);
+  --sidebar: oklch(0.2 0.03 240);
+  --sidebar-foreground: oklch(0.88 0.01 240);
+  --sidebar-accent: oklch(0.42 0.12 240);
+  --sidebar-accent-foreground: oklch(0.98 0 0);
+  --sidebar-border: oklch(0.3 0.03 240);
+  --sidebar-ring: oklch(0.623 0.214 259.815);
+}
+
+.dark {
+  --primary: var(--color-blue-700);
+  --primary-foreground: var(--color-blue-50);
+  --sidebar-primary: var(--color-blue-500);
+  --sidebar-primary-foreground: var(--color-blue-50);
+  --background: oklch(0.141 0.005 285.823);
+  --foreground: oklch(0.85 0.005 65);
+  --card: oklch(0.21 0.006 285.885);
+  --card-foreground: oklch(0.85 0.005 65);
+  --popover: oklch(0.21 0.006 285.885);
+  --popover-foreground: oklch(0.85 0.005 65);
+  --secondary: oklch(0.24 0.006 286.033);
+  --secondary-foreground: oklch(0.7 0.005 65);
+  --muted: oklch(0.274 0.006 286.033);
+  --muted-foreground: oklch(0.705 0.015 286.067);
+  --accent: oklch(0.274 0.006 286.033);
+  --accent-foreground:  oklch(0.92 0.005 65);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.488 0.243 264.376);
+  --chart-1: var(--color-blue-300);
+  --chart-2: var(--color-blue-500);
+  --chart-3: var(--color-blue-600);
+  --chart-4: var(--color-blue-700);
+  --chart-5: var(--color-blue-800);
+  --sidebar: oklch(0.21 0.006 285.885);
+  --sidebar-foreground: oklch(0.85 0.005 65);
+  --sidebar-accent: oklch(0.274 0.006 286.033);
+  --sidebar-accent-foreground:  oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.488 0.243 264.376);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled),
+  a[href],
+  select:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled) {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .flex {
+    min-height: 0;
+    min-width: 0;
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+      max-width: 1280px;
+    }
+  }
+}
+
+/* ─── Clinical Utility Classes ───────────────────────────────────────────── */
+@layer components {
+  .clinical-sidebar-item {
+    @apply flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors cursor-pointer;
+    color: oklch(0.72 0.01 240);
+  }
+  .clinical-sidebar-item:hover {
+    background: oklch(0.28 0.03 240);
+    color: oklch(0.95 0 0);
+  }
+  .clinical-sidebar-item.active {
+    background: var(--sidebar-accent);
+    color: oklch(0.98 0 0);
+  }
+
+  .alert-critical { background: oklch(0.97 0.03 25); border-left: 4px solid var(--alert-critical); }
+  .alert-high     { background: oklch(0.97 0.025 45); border-left: 4px solid var(--alert-high); }
+  .alert-medium   { background: oklch(0.97 0.02 75); border-left: 4px solid var(--alert-medium); }
+  .alert-low      { background: oklch(0.97 0.015 200); border-left: 4px solid var(--alert-low); }
+}
+
+@keyframes recording-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.2); }
+}
+.recording-indicator { animation: recording-pulse 1.4s ease-in-out infinite; }
+
+/* ── Mobile & iOS Safe Area ──────────────────────────────────────────────── */
+
+/* Prevent text size adjustment on iOS after orientation change */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Smooth momentum scrolling on iOS */
+body {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
+}
+
+/* Safe area padding for iPhone notch / home indicator */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Bottom nav safe area on iPhone */
+.mobile-bottom-nav {
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.25rem);
+}
+
+/* Main content area — leave room for bottom nav on mobile */
+.main-content-mobile {
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 4.5rem);
+}
+
+/* Minimum touch target size (Apple HIG: 44×44pt) */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Prevent double-tap zoom on buttons */
+button, a, [role="button"] {
+  touch-action: manipulation;
+}
+
+/* Prevent iOS callout on long press */
+.no-callout {
+  -webkit-touch-callout: none;
+}
+
+/* Smooth chart overflow on mobile */
+.recharts-wrapper {
+  touch-action: pan-y;
+}
+
+/* Ensure inputs don't zoom on iOS (min font-size 16px) */
+input, select, textarea {
+  font-size: max(16px, 1rem);
+}
+
+/* Scrollable tables on small screens */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent horizontal overflow on the whole page */
+#root {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
