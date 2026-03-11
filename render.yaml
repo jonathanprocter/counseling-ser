@@ -10,7 +10,7 @@ services:
     runtime: python
     rootDir: ser_service
     plan: starter
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt && pip install -r requirements-optional.txt || true
     startCommand: gunicorn -w 2 -k gthread -b 0.0.0.0:${PORT:-5001} ser_service:app
     autoDeploy: true
     envVars:

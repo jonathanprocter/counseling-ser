@@ -1,0 +1,4 @@
+# Optional: install these if the platform supports them
+# The service falls back gracefully if unavailable
+opensmile==2.5.0
+audonnx==0.7.0
