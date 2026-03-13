@@ -1,6 +1,6 @@
 import "dotenv/config";
-import mysql from "mysql2/promise";
-import { drizzle } from "drizzle-orm/mysql2";
+import pg from "pg";
+import { drizzle } from "drizzle-orm/node-postgres";
 import { and, eq, desc } from "drizzle-orm";
 import {
   aiSummaries,
@@ -18,8 +18,9 @@ if (!connectionString) {
 }
 
 async function seed() {
-  const connection = await mysql.createConnection(connectionString);
-  const db = drizzle(connection);
+  const client = new pg.Client({ connectionString });
+  await client.connect();
+  const db = drizzle(client);
 
   const clinicianId = ENV.defaultClinicianId;
 
@@ -48,9 +49,8 @@ async function seed() {
       notes: "Starter demo client for local testing.",
       consentSigned: true,
       hipaaAcknowledged: true,
-    });
-    const header = Array.isArray(insertResult) ? insertResult[0] : insertResult;
-    clientId = Number((header as any).insertId);
+    }).returning({ id: clients.id });
+    clientId = insertResult[0].id;
   }
 
   // Create a starter session if none exist for the client
@@ -80,9 +80,8 @@ async function seed() {
       avgValence: 0.48,
       avgDominance: 0.52,
       escalationDetected: true,
-    });
-    const header = Array.isArray(insertResult) ? insertResult[0] : insertResult;
-    sessionId = Number((header as any).insertId);
+    }).returning({ id: sessions.id });
+    sessionId = insertResult[0].id;
 
     await db.insert(emotionReadings).values([
       { sessionId, offsetSeconds: 0, arousal: 0.45, valence: 0.52, dominance: 0.55, confidence: 0.82, rawFeatures: { jitter: 0.12 } },
@@ -108,7 +107,8 @@ async function seed() {
         wordCount: 39,
         status: "completed",
       })
-      .onDuplicateKeyUpdate({
+      .onConflictDoUpdate({
+        target: transcripts.sessionId,
         set: {
           fullText:
             "Client described ongoing work stress and difficulty unwinding at night. We practiced paced breathing and reframing around intrusive worries. Client reported feeling more grounded by the end of session.",
@@ -140,7 +140,8 @@ async function seed() {
         status: "completed",
         generatedAt: new Date(),
       })
-      .onDuplicateKeyUpdate({
+      .onConflictDoUpdate({
+        target: aiSummaries.sessionId,
         set: {
           clinicalSummary:
             "Client presented with moderate anxiety related to work demands and difficulty disengaging from intrusive thoughts. Affect was initially tense with elevated arousal, then softened following breathing practice and cognitive reframing. Overall, the session focused on stabilization and skill reinforcement.",
@@ -170,7 +171,7 @@ async function seed() {
     });
   }
 
-  await connection.end();
+  await client.end();
 
   console.log(`Seed complete. Clinician ${clinicianId}, client ${clientId}, session ${sessionId}.`);
 }

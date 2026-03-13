@@ -1,5 +1,5 @@
 import { and, desc, eq, like, or } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/mysql2";
+import { drizzle } from "drizzle-orm/node-postgres";
 import {
   aiSummaries,
   clients,
@@ -34,9 +34,8 @@ export async function getDb() {
 export async function createClient(data: InsertClient) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
-  const result = await db.insert(clients).values(data);
-  const header = Array.isArray(result) ? result[0] : result;
-  return Number((header as any).insertId);
+  const result = await db.insert(clients).values(data).returning({ id: clients.id });
+  return result[0].id;
 }
 
 export async function getClientsByClinicianId(clinicianId: number) {
@@ -90,9 +89,8 @@ export async function searchClients(clinicianId: number, query: string) {
 export async function createSession(data: InsertSession) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
-  const result = await db.insert(sessions).values(data);
-  const header = Array.isArray(result) ? result[0] : result;
-  return Number((header as any).insertId);
+  const result = await db.insert(sessions).values(data).returning({ id: sessions.id });
+  return result[0].id;
 }
 
 export async function getSessionsByClientId(clientId: number, clinicianId: number) {
@@ -141,7 +139,6 @@ export async function saveEmotionReadings(readings: InsertEmotionReading[]) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
   if (readings.length === 0) return;
-  // Insert in chunks to avoid MySQL packet size limits
   const chunkSize = 100;
   for (let i = 0; i < readings.length; i += chunkSize) {
     await db.insert(emotionReadings).values(readings.slice(i, i + chunkSize));
@@ -165,7 +162,8 @@ export async function upsertTranscript(data: InsertTranscript) {
   await db
     .insert(transcripts)
     .values(data)
-    .onDuplicateKeyUpdate({
+    .onConflictDoUpdate({
+      target: transcripts.sessionId,
       set: {
         fullText: data.fullText,
         segments: data.segments,
@@ -195,7 +193,8 @@ export async function upsertAiSummary(data: InsertAiSummary) {
   await db
     .insert(aiSummaries)
     .values(data)
-    .onDuplicateKeyUpdate({
+    .onConflictDoUpdate({
+      target: aiSummaries.sessionId,
       set: {
         clinicalSummary: data.clinicalSummary,
         emotionalThemes: data.emotionalThemes,
@@ -224,9 +223,8 @@ export async function getAiSummaryBySessionId(sessionId: number) {
 export async function createEscalationAlert(data: InsertEscalationAlert) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
-  const result = await db.insert(escalationAlerts).values(data);
-  const header = Array.isArray(result) ? result[0] : result;
-  return Number((header as any).insertId);
+  const result = await db.insert(escalationAlerts).values(data).returning({ id: escalationAlerts.id });
+  return result[0].id;
 }
 
 export async function getAlertsByClinicianId(clinicianId: number, acknowledged = false) {

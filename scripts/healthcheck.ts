@@ -1,5 +1,5 @@
 import "dotenv/config";
-import mysql from "mysql2/promise";
+import pg from "pg";
 
 const connectionString = process.env.DATABASE_URL;
 const serUrl = process.env.SER_SERVICE_URL;
@@ -8,10 +8,11 @@ async function checkDatabase() {
   if (!connectionString) {
     throw new Error("DATABASE_URL is not set");
   }
-  const connection = await mysql.createConnection(connectionString);
-  const [rows] = await connection.query("SELECT 1 AS ok");
-  await connection.end();
-  return rows;
+  const client = new pg.Client({ connectionString });
+  await client.connect();
+  const result = await client.query("SELECT 1 AS ok");
+  await client.end();
+  return result.rows;
 }
 
 async function checkSerService() {
